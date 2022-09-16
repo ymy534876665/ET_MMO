@@ -598,6 +598,7 @@ public partial class UICodeSpawner
         WidgetInterfaceList.Add("LoopVerticalScrollRect");
         WidgetInterfaceList.Add("LoopHorizontalScrollRect");
         WidgetInterfaceList.Add("UnityEngine.EventSystems.EventTrigger");
+        WidgetInterfaceList.Add("TMPro.TMP_InputField");
     }
 
     private static Dictionary<string, List<Component> > Path2WidgetCachedDict =null;
