@@ -13,5 +13,13 @@ namespace ET
         // 这里配置逻辑层的错误码
         // 110000 - 200000是抛异常的错误
         // 200001以上不抛异常
+        public const int ERR_RealmddressError = 200002;
+
+        public const int ERR_Login_AccountError = 200003;
+
+        public const int ERR_Login_AccountNotExist = 200004;
+        public const int ERR_Login_PasswordErr = 200005;
+        public const int ERR_Login_RepeatedLogin = 200006;
+        
     }
 }

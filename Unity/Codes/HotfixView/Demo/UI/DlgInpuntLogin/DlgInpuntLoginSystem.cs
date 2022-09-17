@@ -20,11 +20,26 @@ namespace ET
 		{
 			string account = self.View.E_AccountInputTMP_InputField.text;
 			string pwd = self.View.E_PwdInputTMP_InputField.text;
-			string address = self.View.E_ServerAddressListDropdown.options[1].text;
-			Log.Debug(string.Format("开始登录服务器：ip port:{0},account:{1},pwd:{2}",address,account,pwd));
-			await LoginHelper.Login(self.ZoneScene(),address,account,pwd);
-			PlayerPrefs.SetString("Account",account);
-			PlayerPrefs.SetString("Password",pwd);
+
+			try
+			{
+				string address = self.View.E_ServerAddressListDropdown.options[0].text;
+				Log.Debug(string.Format("开始登录服务器：ip port:{0},account:{1},pwd:{2}",address,account,pwd));
+				int errorCode =  await LoginHelper.Login(self.ZoneScene(),address,account,pwd);
+				if (errorCode != ErrorCode.ERR_Success)
+				{
+					Log.Debug("登录失败");
+					return;
+				}
+				PlayerPrefs.SetString("Account",account);
+				PlayerPrefs.SetString("Password",pwd);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
+			
+
 		}
 
 		public static void ShowWindow(this DlgInpuntLogin self, Entity contextData = null)
