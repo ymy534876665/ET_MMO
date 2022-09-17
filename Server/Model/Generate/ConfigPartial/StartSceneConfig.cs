@@ -51,7 +51,7 @@ namespace ET
                     case SceneType.Robot:
                         this.Robots.Add(startSceneConfig);
                         break;
-                    case SceneType.RealmInfo:
+                    case SceneType.Realm:
                         this.Realms.Add(startSceneConfig);
                         break;
                 }

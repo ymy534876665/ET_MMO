@@ -16,29 +16,25 @@ namespace ET
             Log.Debug($"登录测试{account} {password} realm : {realmAddress}");
 
             Session session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(realmAddress));
-            // C2R_AccountLogin msg = new C2R_AccountLogin();
-            // msg.Account = account;
-            // msg.Password = password;
-            // msg.LoginWay = (int)LoginWayType.Normal;
             R2C_AccountLogin r2CAccountLogin =  (R2C_AccountLogin) await session.Call( new C2R_AccountLogin()
             {
                 Account = account,
                 Password = password,
-                LoginWay = (int)LoginWayType.Normal,
+                LoginWay = (int)LoginWayType.Normal
             });
-            // if (r2CAccountLogin.Error != ErrorCode.ERR_Success) //登录请求失败
-            // {
-            //     Log.Error($"登录测试错误 r2CAccountLogin.Error {r2CAccountLogin.Error}");
-            //     return r2CAccountLogin.Error;
-            // }
-            //
-            // SessionComponent sessionComponent = zoneScene.GetComponent<SessionComponent>();
-            // if (sessionComponent == null)
-            // {
-            //     sessionComponent = zoneScene.AddComponent<SessionComponent>();
-            // }
-            //
-            // sessionComponent.Session = session;
+            if (r2CAccountLogin.Error != ErrorCode.ERR_Success) //登录请求失败
+            {
+                Log.Error($"登录测试错误 r2CAccountLogin.Error {r2CAccountLogin.Error}");
+                return r2CAccountLogin.Error;
+            }
+            
+            SessionComponent sessionComponent = zoneScene.GetComponent<SessionComponent>();
+            if (sessionComponent == null)
+            {
+                sessionComponent = zoneScene.AddComponent<SessionComponent>();
+            }
+            
+            sessionComponent.Session = session;
             return r2CAccountLogin.Error;
         } 
     }
