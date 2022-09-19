@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
     public static class LoginHelper
     {
@@ -15,5 +17,15 @@
             self.Dispose();
 
         }
+
+        public static StartSceneConfig GetGateConfig(int zone,string account)
+        {
+            int modeCount = Math.Abs(account.GetHashCode() % StartSceneConfigCategory.Instance.Gates[zone].Count);
+            StartSceneConfig gateConfig = StartSceneConfigCategory.Instance.Gates[zone][modeCount];
+            return gateConfig;
+        }
     }
+    
+    
+
 }

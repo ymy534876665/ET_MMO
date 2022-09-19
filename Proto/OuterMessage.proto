@@ -256,3 +256,48 @@ message R2C_AccountLogin // IResponse
 	int32 Error = 91;
 	string Message = 92;
 }
+
+message ServerListInfo 
+{
+	int32 Zone = 1;
+	string Name = 2;
+	int32 Status = 3;
+
+}
+
+
+//ResponseType R2C_GetServerList
+message C2R_GetServerList // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message R2C_GetServerList // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+	repeated ServerListInfo serverListInfos = 1;
+}
+
+
+
+//ResponseType R2C_LoginZone
+message C2R_LoginZone // IRequest
+{
+	int32 RpcId = 90;
+
+	int32 zone = 1;
+
+}
+
+
+message R2C_LoginZone // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+	string GateAddress = 1;
+	int64 GateKey = 2;
+}

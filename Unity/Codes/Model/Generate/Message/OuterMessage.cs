@@ -527,4 +527,81 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.ServerListInfo)]
+	[ProtoContract]
+	public partial class ServerListInfo: Object
+	{
+		[ProtoMember(1)]
+		public int Zone { get; set; }
+
+		[ProtoMember(2)]
+		public string Name { get; set; }
+
+		[ProtoMember(3)]
+		public int Status { get; set; }
+
+	}
+
+	[ResponseType(nameof(R2C_GetServerList))]
+	[Message(OuterOpcode.C2R_GetServerList)]
+	[ProtoContract]
+	public partial class C2R_GetServerList: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.R2C_GetServerList)]
+	[ProtoContract]
+	public partial class R2C_GetServerList: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<ServerListInfo> serverListInfos = new List<ServerListInfo>();
+
+	}
+
+	[ResponseType(nameof(R2C_LoginZone))]
+	[Message(OuterOpcode.C2R_LoginZone)]
+	[ProtoContract]
+	public partial class C2R_LoginZone: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public int zone { get; set; }
+
+	}
+
+	[Message(OuterOpcode.R2C_LoginZone)]
+	[ProtoContract]
+	public partial class R2C_LoginZone: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public string GateAddress { get; set; }
+
+		[ProtoMember(2)]
+		public long GateKey { get; set; }
+
+	}
+
 }

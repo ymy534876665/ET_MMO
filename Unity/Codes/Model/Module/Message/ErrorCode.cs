@@ -18,8 +18,14 @@ namespace ET
         public const int ERR_Login_AccountError = 200003;
 
         public const int ERR_Login_AccountNotExist = 200004;
+        
         public const int ERR_Login_PasswordErr = 200005;
+        
         public const int ERR_Login_RepeatedLogin = 200006;
         
+        public const int ERR_Login_AccountNotLogin = 200007;
+
+        public const int ERR_Login_ZoneNotExist = 200008;
+
     }
 }

@@ -36,6 +36,44 @@ namespace ET
             
             sessionComponent.Session = session;
             return r2CAccountLogin.Error;
-        } 
+            
+        }
+    
+        /// <summary>
+        /// 请求区服列表
+        /// </summary>
+        /// <param name="zoneScen"></param>
+        /// <returns></returns>
+        public static async ETTask<int> GetServerList(Scene zoneScen)
+        {
+
+            R2C_GetServerList r2CGetServerList = (R2C_GetServerList) await zoneScen.GetComponent<SessionComponent>().Session.Call( new C2R_GetServerList() {});
+            if (r2CGetServerList.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"获取区服列表错误 Error{r2CGetServerList.Error}");
+                return r2CGetServerList.Error;
+            }
+            zoneScen.GetComponent<ServerInfoComponent>().ClearServerInfo();
+            foreach (var serverListInfo in r2CGetServerList.serverListInfos)
+            {
+                zoneScen.GetComponent<ServerInfoComponent>().AddServerInfo(serverListInfo);
+            }
+            return ErrorCode.ERR_Success;
+        }
+
+        public static async ETTask<int> LoginZone(Scene zoneScene,int zoneId)
+        {
+            R2C_LoginZone r2CLoginZone =(R2C_LoginZone) await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2R_LoginZone()
+            {
+                zone = zoneId
+            });
+            if (r2CLoginZone.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"登录测试 R2C_LoginZone Erroy {r2CLoginZone.Error}");
+                return r2CLoginZone.Error;
+            }
+            Log.Debug($"登录测试 Gate: {r2CLoginZone.GateAddress} Key:{r2CLoginZone.GateKey}");
+            return ErrorCode.ERR_Success;
+        }
     }
 }

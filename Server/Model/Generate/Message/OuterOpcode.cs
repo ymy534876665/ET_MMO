@@ -34,5 +34,10 @@ namespace ET
 		 public const ushort M2C_TransferMap = 10031;
 		 public const ushort C2R_AccountLogin = 10032;
 		 public const ushort R2C_AccountLogin = 10033;
+		 public const ushort ServerListInfo = 10034;
+		 public const ushort C2R_GetServerList = 10035;
+		 public const ushort R2C_GetServerList = 10036;
+		 public const ushort C2R_LoginZone = 10037;
+		 public const ushort R2C_LoginZone = 10038;
 	}
 }

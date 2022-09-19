@@ -14,6 +14,8 @@ namespace ET
 
         public const int AccountLogin = 9;              //登录
 
+        public const int LoginZone = 10;                //登录区服
+
         public const int Max = 100; // 这个必须最大
     }
 }

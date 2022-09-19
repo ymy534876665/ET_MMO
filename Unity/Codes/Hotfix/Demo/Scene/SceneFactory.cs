@@ -1,3 +1,5 @@
+using System.Threading;
+
 namespace ET
 {
     public static class SceneFactory
@@ -10,7 +12,7 @@ namespace ET
 			zoneScene.AddComponent<CurrentScenesComponent>();
             zoneScene.AddComponent<ObjectWait>();
             zoneScene.AddComponent<PlayerComponent>();
-            
+            zoneScene.AddComponent<ServerInfoComponent>();
             Game.EventSystem.Publish(new EventType.AfterCreateZoneScene() {ZoneScene = zoneScene});
             return zoneScene;
         }
@@ -23,7 +25,6 @@ namespace ET
             Game.EventSystem.Publish(new EventType.AfterCreateCurrentScene() {CurrentScene = currentScene});
             return currentScene;
         }
-        
         
     }
 }

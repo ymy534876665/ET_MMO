@@ -33,6 +33,14 @@ namespace ET
 				}
 				PlayerPrefs.SetString("Account",account);
 				PlayerPrefs.SetString("Password",pwd);
+
+				errorCode =  await LoginHelper.GetServerList(self.ZoneScene());
+				if (errorCode != ErrorCode.ERR_Success)
+				{
+					return;
+				}
+				self.ZoneScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_ServerInfo);
+
 			}
 			catch (Exception e)
 			{
