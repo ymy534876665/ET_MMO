@@ -27,5 +27,7 @@ namespace ET
 
         public const int ERR_Login_ZoneNotExist = 200008;
 
+        public const int ERR_Login_NoLoginGateInfo = 200009;
+
     }
 }

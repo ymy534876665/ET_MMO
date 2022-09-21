@@ -301,3 +301,42 @@ message R2C_LoginZone // IResponse
 	string GateAddress = 1;
 	int64 GateKey = 2;
 }
+
+message LoginGateInfo
+{
+	string Account = 1;
+	int32 LogicZone = 2;
+}
+
+//ResponseType G2R_GatGateKey
+message R2G_GatGateKey // IActorRequest
+{
+	int32 RpcId = 90;
+
+	LoginGateInfo info = 1;
+}
+
+message G2R_GatGateKey // IActorResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+
+	int64 GateKey = 1;
+}
+
+//ResponseType G2C_Login2Gate
+message C2G_Login2Gate // IRequest
+{
+	int32 RpcId = 90;
+	int64 GateKey = 2;
+}
+
+message G2C_Login2Gate // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+

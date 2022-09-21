@@ -73,6 +73,30 @@ namespace ET
                 return r2CLoginZone.Error;
             }
             Log.Debug($"登录测试 Gate: {r2CLoginZone.GateAddress} Key:{r2CLoginZone.GateKey}");
+            //释放掉realm网关服务器上的session连接
+            zoneScene.GetComponent<SessionComponent>().Session?.Dispose(); 
+            //新建Gate网关服务器的连接session
+            Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLoginZone.GateAddress));
+            //心跳组件
+            PingComponent pingComponent = gateSession.GetComponent<PingComponent>();
+            if (pingComponent == null)
+            {
+                pingComponent = gateSession.AddComponent<PingComponent>();
+            }
+            
+            zoneScene.GetComponent<SessionComponent>().Session = gateSession;
+
+
+            G2C_Login2Gate g2CLogin2Gate = (G2C_Login2Gate) await gateSession.Call(new C2G_Login2Gate()
+            {
+                GateKey = r2CLoginZone.GateKey
+            });
+            if (g2CLogin2Gate.Error != ErrorCode.ERR_Success)
+            {
+                Log.Debug($"登录测试 G2C_Login2Gate ERROR{g2CLogin2Gate.Error}");
+                return g2CLogin2Gate.Error;
+            }
+            Log.Debug("登录Gate网关服务器成功");
             return ErrorCode.ERR_Success;
         }
     }
