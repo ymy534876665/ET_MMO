@@ -11,9 +11,9 @@ namespace ET
             string result = await HttpClientHelper.Request(url);
             HTTP_GetRealmResponse httpGetRealmResponse = JsonHelper.FromJson<HTTP_GetRealmResponse>(result);
             Log.Debug($"登录测试 HTTP_GetRealmResponse{JsonHelper.ToJson(httpGetRealmResponse)}");
-            int modCount = Math.Abs(account.GetHashCode())  % httpGetRealmResponse.Realms.Count;
+            int modCount = Math.Abs(account.GetHashCode()  % httpGetRealmResponse.Realms.Count);
             string realmAddress = httpGetRealmResponse.Realms[modCount];
-            Log.Debug($"登录测试{account} {password} realm : {realmAddress}");
+            Log.Debug($"登录测试{account} {password} realm : {realmAddress}   modCount {modCount} GetHashCode {account.GetHashCode() }");
 
             Session session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(realmAddress));
             R2C_AccountLogin r2CAccountLogin =  (R2C_AccountLogin) await session.Call( new C2R_AccountLogin()

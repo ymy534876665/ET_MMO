@@ -29,5 +29,7 @@ namespace ET
 
         public const int ERR_Login_NoLoginGateInfo = 200009;
 
+        public const int ERR_Login_MultiLogin = 200010;
+
     }
 }

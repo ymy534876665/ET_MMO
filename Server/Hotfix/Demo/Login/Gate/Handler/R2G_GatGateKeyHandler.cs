@@ -3,7 +3,7 @@
 namespace ET
 {
     [FriendClassAttribute(typeof(ET.GateUserMgrComponent))]
-    public class G2R_GatGateKeyHandler : AMActorRpcHandler<Scene, R2G_GatGateKey, G2R_GatGateKey>
+    public class R2G_GatGateKeyHandler : AMActorRpcHandler<Scene, R2G_GatGateKey, G2R_GatGateKey>
     {
         protected override async ETTask Run(Scene scene, R2G_GatGateKey request, G2R_GatGateKey response, Action reply)
         {
@@ -13,6 +13,18 @@ namespace ET
             if (gateUser != null)//顶号的逻辑
             {
                 //TODO 顶号的逻辑
+
+                long instanceId = gateUser.InstanceId;
+                using (await gateUser.GetGateUserLock())
+                {
+                    if (instanceId != gateUser.InstanceId)
+                    {
+                        reply();
+                        return;   
+                    }
+                    gateUser.OfflineSession();
+                }
+
             }
 
             GateSessionKeyComponent gateSessionKeyComponent = scene.GetComponent<GateSessionKeyComponent>();

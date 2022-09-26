@@ -6,7 +6,8 @@ namespace ET
     [FriendClass(typeof(LoginGateInfo))]
     [FriendClass(typeof(AccountZoneDB))]
     [FriendClass(typeof(RoleInfoDB))]
-    public class G2C_Login2GateHandler : AMRpcHandler<C2G_Login2Gate,G2C_Login2Gate>
+    [FriendClass(typeof(GateUser))]
+    public class C2G_Login2GateHandler : AMRpcHandler<C2G_Login2Gate,G2C_Login2Gate>
     {
         protected override async ETTask Run(Session session, C2G_Login2Gate request, G2C_Login2Gate response, Action reply)
         {
@@ -65,9 +66,17 @@ namespace ET
                 }
                 else
                 {
-                    
+                    gateUser.RemoveComponent<GateUserDisconnectComponent>();
+                    gateUser.RemoveComponent<MultiLoginComponent>();
                 }
 
+                gateUser.SessionInstanceId = session.InstanceId;
+                session.AddComponent<SessionUserComponent, long>(gateUser.InstanceId);
+
+                if (gateUser.state != GateUserState.InGate) //有其他的客户端登录
+                {
+                    gateUser.AddComponent<MultiLoginComponent>();
+                }
                 reply();
             }
             

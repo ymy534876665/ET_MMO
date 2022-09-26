@@ -44,5 +44,6 @@ namespace ET
 		 public const ushort G2R_GatGateKey = 10041;
 		 public const ushort C2G_Login2Gate = 10042;
 		 public const ushort G2C_Login2Gate = 10043;
+		 public const ushort A2C_Disconnect = 10044;
 	}
 }

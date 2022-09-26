@@ -340,3 +340,8 @@ message G2C_Login2Gate // IResponse
 	string Message = 92;
 }
 
+message A2C_Disconnect //IMessage
+{
+	int32 Error = 1;
+}
+
