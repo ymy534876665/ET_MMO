@@ -49,6 +49,7 @@ namespace ET
 				}
 				self.ZoneScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_ServerInfo);
 				self.ZoneScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_InpuntLogin);
+				self.ZoneScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_TapToStart);
 				
 			}
 			catch (Exception e)

@@ -99,5 +99,11 @@ namespace ET
             Log.Debug("登录Gate网关服务器成功");
             return ErrorCode.ERR_Success;
         }
+
+        public static async ETTask<int> GetRoleInfos(Scene zoneScene)
+        {
+            
+            return ErrorCode.ERR_Success;
+        }
     }
 }

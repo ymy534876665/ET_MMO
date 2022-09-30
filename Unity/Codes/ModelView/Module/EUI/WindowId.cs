@@ -10,5 +10,6 @@
         WindowID_Helper,   //提示界面
         WindowID_InpuntLogin,//登录界面
         WindowID_ServerInfo, //区服选择界面
+        WindowID_TapToStart, //点击开始游戏界面
     }
 }
