@@ -11,9 +11,9 @@ namespace ET
             string result = await HttpClientHelper.Request(url);
             HTTP_GetRealmResponse httpGetRealmResponse = JsonHelper.FromJson<HTTP_GetRealmResponse>(result);
             Log.Debug($"登录测试 HTTP_GetRealmResponse{JsonHelper.ToJson(httpGetRealmResponse)}");
-            int modCount = Math.Abs(account.GetHashCode())  % httpGetRealmResponse.Realms.Count;
+            int modCount = (int)((ulong)account.GetLongHashCode()  % (uint)httpGetRealmResponse.Realms.Count);
             string realmAddress = httpGetRealmResponse.Realms[modCount];
-            Log.Debug($"登录测试{account} {password} realm : {realmAddress}");
+            Log.Debug($"登录测试{account} {password} realm : {realmAddress}   modCount {modCount} GetHashCode {account.GetHashCode() }");
 
             Session session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(realmAddress));
             R2C_AccountLogin r2CAccountLogin =  (R2C_AccountLogin) await session.Call( new C2R_AccountLogin()
@@ -73,6 +73,63 @@ namespace ET
                 return r2CLoginZone.Error;
             }
             Log.Debug($"登录测试 Gate: {r2CLoginZone.GateAddress} Key:{r2CLoginZone.GateKey}");
+            //释放掉realm网关服务器上的session连接
+            zoneScene.GetComponent<SessionComponent>().Session?.Dispose(); 
+            //新建Gate网关服务器的连接session
+            Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLoginZone.GateAddress));
+            //心跳组件
+            PingComponent pingComponent = gateSession.GetComponent<PingComponent>();
+            if (pingComponent == null)
+            {
+                pingComponent = gateSession.AddComponent<PingComponent>();
+            }
+            
+            zoneScene.GetComponent<SessionComponent>().Session = gateSession;
+
+
+            G2C_Login2Gate g2CLogin2Gate = (G2C_Login2Gate) await gateSession.Call(new C2G_Login2Gate()
+            {
+                GateKey = r2CLoginZone.GateKey
+            });
+            if (g2CLogin2Gate.Error != ErrorCode.ERR_Success)
+            {
+                Log.Debug($"登录测试 G2C_Login2Gate ERROR{g2CLogin2Gate.Error}");
+                return g2CLogin2Gate.Error;
+            }
+            Log.Debug("登录Gate网关服务器成功");
+            return ErrorCode.ERR_Success;
+        }
+
+        public static async ETTask<int> GetRoleInfos(Scene zoneScene)
+        {
+
+            G2C_GetRoles g2c_GetRoles = (G2C_GetRoles)await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_GetRoles()
+            {
+                
+            });
+            if (g2c_GetRoles.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"获取角色信息错误：{g2c_GetRoles.Error}");
+                return g2c_GetRoles.Error;
+            }
+            zoneScene.GetComponent<RoleInfosComponent>().ClearRoleInfos();
+            foreach (GateRoleInfo gateRoleInfo in g2c_GetRoles.Roles)
+            {
+                zoneScene.GetComponent<RoleInfosComponent>().AddRoleInfo(gateRoleInfo);
+            }
+            return ErrorCode.ERR_Success;
+        }
+
+
+        public static async ETTask<int> CreateRole(Scene zoneScene,string name)
+        {
+            G2C_CreateRole msg = (G2C_CreateRole) await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_CreateRole() { Name = name});
+            if (msg.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"创角角色错误 错误码{msg.Error}");
+                return msg.Error;
+            }
+            zoneScene.GetComponent<RoleInfosComponent>().AddRoleInfo(msg.Role);
             return ErrorCode.ERR_Success;
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
 
@@ -17,6 +18,8 @@ namespace ET
         public List<StartSceneConfig> Robots = new List<StartSceneConfig>();
 
         public List<StartSceneConfig> Realms = new List<StartSceneConfig>();
+
+        public StartSceneConfig[,] SceneTypeByScenes = new StartSceneConfig[IdGenerater.MaxZone,(int) SceneType.Max];
 
         public List<StartSceneConfig> GetByProcess(int process)
         {
@@ -54,7 +57,34 @@ namespace ET
                     case SceneType.Realm:
                         this.Realms.Add(startSceneConfig);
                         break;
+                    default:
+                        this.SceneTypeByScenes[startSceneConfig.Zone, (int) startSceneConfig.Type] = startSceneConfig;
+                        break;
                 }
+            }
+        }
+
+        public StartSceneConfig GetBySceneType(int zone,SceneType sceneType)
+        {
+            StartSceneConfig config = this.SceneTypeByScenes[zone, (int)sceneType];
+            if (config == null)
+            {
+                Log.Error($"无法获得对应的区服的scene zone:{zone},SceneType:{sceneType}");
+            }
+
+            return config;
+        }
+
+        public long GetSceneInstanceId(int zone,SceneType sceneType)
+        {
+            try
+            {
+                StartSceneConfig config = this.GetBySceneType(zone, sceneType);
+                return config.InstanceId;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"not found scene:{zone}  {sceneType}",e);
             }
         }
     }

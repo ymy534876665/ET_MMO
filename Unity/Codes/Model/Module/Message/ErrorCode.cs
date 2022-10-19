@@ -27,5 +27,19 @@ namespace ET
 
         public const int ERR_Login_ZoneNotExist = 200008;
 
+        public const int ERR_Login_NoLoginGateInfo = 200009;
+
+        public const int ERR_Login_MultiLogin = 200010;
+        
+        public const int ERR_Login_NoneGateUser = 200011;
+        
+        public const int ERR_Login_NoneAccountZoneDB = 200012;
+        
+        public const int ERR_Login_NoneName = 200013;
+        
+        public const int ERR_Login_NoneCheckName = 200014;  
+        
+        public const int ERR_Login_NameRepeated = 200015;
+
     }
 }

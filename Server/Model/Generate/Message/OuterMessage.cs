@@ -604,4 +604,158 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.LoginGateInfo)]
+	[ProtoContract]
+	public partial class LoginGateInfo: Object
+	{
+		[ProtoMember(1)]
+		public string Account { get; set; }
+
+		[ProtoMember(2)]
+		public int LogicZone { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2R_GatGateKey))]
+	[Message(OuterOpcode.R2G_GatGateKey)]
+	[ProtoContract]
+	public partial class R2G_GatGateKey: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public LoginGateInfo info { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2R_GatGateKey)]
+	[ProtoContract]
+	public partial class G2R_GatGateKey: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public long GateKey { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_Login2Gate))]
+	[Message(OuterOpcode.C2G_Login2Gate)]
+	[ProtoContract]
+	public partial class C2G_Login2Gate: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long GateKey { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_Login2Gate)]
+	[ProtoContract]
+	public partial class G2C_Login2Gate: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+	[Message(OuterOpcode.A2C_Disconnect)]
+	[ProtoContract]
+	public partial class A2C_Disconnect: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public int Error { get; set; }
+
+	}
+
+	[Message(OuterOpcode.GateRoleInfo)]
+	[ProtoContract]
+	public partial class GateRoleInfo: Object
+	{
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(2)]
+		public string Name { get; set; }
+
+		[ProtoMember(3)]
+		public int Level { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_GetRoles))]
+	[Message(OuterOpcode.C2G_GetRoles)]
+	[ProtoContract]
+	public partial class C2G_GetRoles: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_GetRoles)]
+	[ProtoContract]
+	public partial class G2C_GetRoles: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<GateRoleInfo> Roles = new List<GateRoleInfo>();
+
+	}
+
+	[ResponseType(nameof(G2C_CreateRole))]
+	[Message(OuterOpcode.C2G_CreateRole)]
+	[ProtoContract]
+	public partial class C2G_CreateRole: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public string Name { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_CreateRole)]
+	[ProtoContract]
+	public partial class G2C_CreateRole: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public GateRoleInfo Role { get; set; }
+
+	}
+
 }

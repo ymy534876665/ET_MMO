@@ -24,9 +24,31 @@ namespace ET
             }
 
             string account = realmAccountComponent.Info.Account;
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginZone,account.GetHashCode()))
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginZone,account.GetLongHashCode()))
             {
+                StartSceneConfig startSceneConfig = LoginHelper.GetGateConfig(request.zone,account);
+
+                G2R_GatGateKey g2RGatGateKey = (G2R_GatGateKey) await MessageHelper.CallActor(startSceneConfig.InstanceId,new R2G_GatGateKey()
+                {
+                    info = new LoginGateInfo()
+                    {
+                        Account = account,
+                        LogicZone = request.zone,
+                    }
+                });
+                if (g2RGatGateKey.Error != ErrorCode.ERR_Success)
+                {
+                    response.Error = g2RGatGateKey.Error;
+                    reply();
+                    return;
+                }
                 
+                
+                response.GateAddress = startSceneConfig.InnerIPOutPort.ToString();
+                response.GateKey = g2RGatGateKey.GateKey;
+                reply();
+                
+                session?.Disconnect().Coroutine();
             }
             await ETTask.CompletedTask;
         }

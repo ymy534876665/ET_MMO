@@ -301,3 +301,90 @@ message R2C_LoginZone // IResponse
 	string GateAddress = 1;
 	int64 GateKey = 2;
 }
+
+message LoginGateInfo
+{
+	string Account = 1;
+	int32 LogicZone = 2;
+}
+
+//ResponseType G2R_GatGateKey
+message R2G_GatGateKey // IActorRequest
+{
+	int32 RpcId = 90;
+
+	LoginGateInfo info = 1;
+}
+
+message G2R_GatGateKey // IActorResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+
+	int64 GateKey = 1;
+}
+
+//ResponseType G2C_Login2Gate
+message C2G_Login2Gate // IRequest
+{
+	int32 RpcId = 90;
+	int64 GateKey = 2;
+}
+
+message G2C_Login2Gate // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+}
+
+message A2C_Disconnect //IMessage
+{
+	int32 Error = 1;
+}
+
+message GateRoleInfo
+{
+	int64 UnitId = 1;
+	string Name = 2;
+	int32 Level = 3;
+}
+
+//ResponseType G2C_GetRoles
+message C2G_GetRoles // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_GetRoles // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+	repeated GateRoleInfo Roles = 1;
+}
+
+
+//ResponseType G2C_CreateRole
+message C2G_CreateRole // IRequest
+{
+	int32 RpcId = 90;
+	string Name = 1;
+}
+
+
+message G2C_CreateRole // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+	GateRoleInfo Role = 1;
+
+}
+
+
+
