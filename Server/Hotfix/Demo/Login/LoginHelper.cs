@@ -19,7 +19,7 @@ namespace ET
                 throw new Exception("GetGateUserlock but account is Null");
             }
 
-            return await CoroutineLockComponent.Instance.Wait(CoroutineLockType.GateUserLock, account.GetHashCode());
+            return await CoroutineLockComponent.Instance.Wait(CoroutineLockType.GateUserLock, account.GetLongHashCode());
         }
 
         public static ETTask<CoroutineLock> GetGateUserLock(this GateUser self)
@@ -111,7 +111,7 @@ namespace ET
 
         public static StartSceneConfig GetGateConfig(int zone, string account)
         {
-            int modeCount = Math.Abs(account.GetHashCode() % StartSceneConfigCategory.Instance.Gates[zone].Count);
+            int modeCount = (int)((ulong)account.GetLongHashCode() % (uint)StartSceneConfigCategory.Instance.Gates[zone].Count);
             StartSceneConfig gateConfig = StartSceneConfigCategory.Instance.Gates[zone][modeCount];
             return gateConfig;
         }

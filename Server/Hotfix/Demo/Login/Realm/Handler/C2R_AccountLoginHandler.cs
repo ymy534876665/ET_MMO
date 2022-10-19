@@ -10,8 +10,8 @@ namespace ET
         protected override async ETTask Run(Session session, C2R_AccountLogin request, R2C_AccountLogin response, Action reply)
         {
             session.RemoveComponent<SessionAcceptTimeoutComponent>();
-            int hashCode = request.Account.GetHashCode();
-            int modCount = Math.Abs(hashCode  % StartSceneConfigCategory.Instance.Realms.Count);
+
+            int modCount = (int)((ulong)request.Account.GetLongHashCode()  % (uint)StartSceneConfigCategory.Instance.Realms.Count);
             if (session.DomainScene().InstanceId != StartSceneConfigCategory.Instance.Realms[modCount].InstanceId)
             {
                 response.Error = ErrorCode.ERR_RealmddressError;
@@ -38,7 +38,7 @@ namespace ET
             string account = request.Account;
 
             //携程锁  防止同一时间相投的账号进行数据库读写操作
-            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.AccountLogin,account.GetHashCode())) 
+            using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.AccountLogin,account.GetLongHashCode())) 
             {
                 AccountDB accountDB = null;
                 List<AccountDB> list = await session.GetDirectDB().Query<AccountDB>(db => db.Account == account);

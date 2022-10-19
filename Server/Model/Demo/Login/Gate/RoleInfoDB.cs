@@ -14,5 +14,7 @@
         public string Name;
 
         public int level;
+
+        public int LoginZone;
     }
 }

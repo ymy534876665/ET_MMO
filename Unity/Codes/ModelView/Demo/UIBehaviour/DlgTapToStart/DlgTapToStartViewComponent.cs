@@ -7,7 +7,7 @@ namespace ET
 	[EnableMethod]
 	public  class DlgTapToStartViewComponent : Entity,IAwake,IDestroy 
 	{
-		public UnityEngine.UI.Button E_StartBtnButton
+		public UnityEngine.UI.Button E_Button_StartButton
      	{
      		get
      		{
@@ -16,15 +16,15 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_E_StartBtnButton == null )
+     			if( this.m_E_Button_StartButton == null )
      			{
-		    		this.m_E_StartBtnButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"TapToStart/E_StartBtn");
+		    		this.m_E_Button_StartButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"TapToStart/E_Button_Start");
      			}
-     			return this.m_E_StartBtnButton;
+     			return this.m_E_Button_StartButton;
      		}
      	}
 
-		public UnityEngine.UI.Image E_StartBtnImage
+		public UnityEngine.UI.Image E_Button_StartImage
      	{
      		get
      		{
@@ -33,23 +33,23 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_E_StartBtnImage == null )
+     			if( this.m_E_Button_StartImage == null )
      			{
-		    		this.m_E_StartBtnImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"TapToStart/E_StartBtn");
+		    		this.m_E_Button_StartImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"TapToStart/E_Button_Start");
      			}
-     			return this.m_E_StartBtnImage;
+     			return this.m_E_Button_StartImage;
      		}
      	}
 
 		public void DestroyWidget()
 		{
-			this.m_E_StartBtnButton = null;
-			this.m_E_StartBtnImage = null;
+			this.m_E_Button_StartButton = null;
+			this.m_E_Button_StartImage = null;
 			this.uiTransform = null;
 		}
 
-		private UnityEngine.UI.Button m_E_StartBtnButton = null;
-		private UnityEngine.UI.Image m_E_StartBtnImage = null;
+		private UnityEngine.UI.Button m_E_Button_StartButton = null;
+		private UnityEngine.UI.Image m_E_Button_StartImage = null;
 		public Transform uiTransform = null;
 	}
 }

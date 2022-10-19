@@ -154,3 +154,20 @@ message G2M_SessionDisconnect // IActorLocationMessage
 {
 	int32 RpcId = 90;
 }
+
+
+//ResponseType Name2G_CheckName
+message G2Name_CheckName // IActorRequest
+{
+	int32 RpcId = 90;
+
+	string Name = 1;
+	int64 UnitId = 2;
+}
+
+message Name2G_CheckName //IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

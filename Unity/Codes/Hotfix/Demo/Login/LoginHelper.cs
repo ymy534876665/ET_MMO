@@ -11,7 +11,7 @@ namespace ET
             string result = await HttpClientHelper.Request(url);
             HTTP_GetRealmResponse httpGetRealmResponse = JsonHelper.FromJson<HTTP_GetRealmResponse>(result);
             Log.Debug($"登录测试 HTTP_GetRealmResponse{JsonHelper.ToJson(httpGetRealmResponse)}");
-            int modCount = Math.Abs(account.GetHashCode()  % httpGetRealmResponse.Realms.Count);
+            int modCount = (int)((ulong)account.GetLongHashCode()  % (uint)httpGetRealmResponse.Realms.Count);
             string realmAddress = httpGetRealmResponse.Realms[modCount];
             Log.Debug($"登录测试{account} {password} realm : {realmAddress}   modCount {modCount} GetHashCode {account.GetHashCode() }");
 
@@ -102,7 +102,34 @@ namespace ET
 
         public static async ETTask<int> GetRoleInfos(Scene zoneScene)
         {
-            
+
+            G2C_GetRoles g2c_GetRoles = (G2C_GetRoles)await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_GetRoles()
+            {
+                
+            });
+            if (g2c_GetRoles.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"获取角色信息错误：{g2c_GetRoles.Error}");
+                return g2c_GetRoles.Error;
+            }
+            zoneScene.GetComponent<RoleInfosComponent>().ClearRoleInfos();
+            foreach (GateRoleInfo gateRoleInfo in g2c_GetRoles.Roles)
+            {
+                zoneScene.GetComponent<RoleInfosComponent>().AddRoleInfo(gateRoleInfo);
+            }
+            return ErrorCode.ERR_Success;
+        }
+
+
+        public static async ETTask<int> CreateRole(Scene zoneScene,string name)
+        {
+            G2C_CreateRole msg = (G2C_CreateRole) await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_CreateRole() { Name = name});
+            if (msg.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"创角角色错误 错误码{msg.Error}");
+                return msg.Error;
+            }
+            zoneScene.GetComponent<RoleInfosComponent>().AddRoleInfo(msg.Role);
             return ErrorCode.ERR_Success;
         }
     }

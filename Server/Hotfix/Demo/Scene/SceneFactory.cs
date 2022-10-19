@@ -40,6 +40,10 @@ namespace ET
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
                     break;
+                case SceneType.Name:
+                    scene.AddComponent<TempComponent>();
+                    break;
+                
             }
 
             return scene;
