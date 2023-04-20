@@ -27,7 +27,7 @@ namespace ET
                 return;
             }
 
-            await ETTask.CompletedTask;
+
 
             long instanceId = accountZoneDB.InstanceId;
             long unitId = request.UnitId;
@@ -69,6 +69,7 @@ namespace ET
                     return;
                 }
 
+                response.InQueue = msg.NeedQueue;
                 //需要排队
                 if (msg.NeedQueue)
                 {
@@ -99,6 +100,7 @@ namespace ET
                 }
 
             }
+            await ETTask.CompletedTask;
         }
     }
 }
