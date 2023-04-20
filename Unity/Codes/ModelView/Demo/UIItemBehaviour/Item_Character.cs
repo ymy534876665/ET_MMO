@@ -115,6 +115,30 @@ namespace ET
      		}
      	}
 
+		public UnityEngine.UI.Button E_SelectBtnButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if (this.isCacheNode)
+     			{
+     				if( this.m_E_SelectBtnButton == null )
+     				{
+		    			this.m_E_SelectBtnButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EG_Role/E_SelectBtn");
+     				}
+     				return this.m_E_SelectBtnButton;
+     			}
+     			else
+     			{
+		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EG_Role/E_SelectBtn");
+     			}
+     		}
+     	}
+
 		public UnityEngine.UI.Image E_SelectBtnImage
      	{
      		get
@@ -265,6 +289,7 @@ namespace ET
 			this.m_E_AddRoleBtnButton = null;
 			this.m_E_AddRoleBtnImage = null;
 			this.m_EG_RoleRectTransform = null;
+			this.m_E_SelectBtnButton = null;
 			this.m_E_SelectBtnImage = null;
 			this.m_E_DeleteButton = null;
 			this.m_E_DeleteImage = null;
@@ -279,6 +304,7 @@ namespace ET
 		private UnityEngine.UI.Button m_E_AddRoleBtnButton = null;
 		private UnityEngine.UI.Image m_E_AddRoleBtnImage = null;
 		private UnityEngine.RectTransform m_EG_RoleRectTransform = null;
+		private UnityEngine.UI.Button m_E_SelectBtnButton = null;
 		private UnityEngine.UI.Image m_E_SelectBtnImage = null;
 		private UnityEngine.UI.Button m_E_DeleteButton = null;
 		private UnityEngine.UI.Image m_E_DeleteImage = null;

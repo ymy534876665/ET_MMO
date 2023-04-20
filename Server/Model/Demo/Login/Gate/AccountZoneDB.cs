@@ -10,5 +10,9 @@
         public string Account;
 
         public int LoginZoneId;
+        /// <summary>
+        /// 最后一次登陆的角色Id
+        /// </summary>
+        public long LastRoleId;
     }
 }

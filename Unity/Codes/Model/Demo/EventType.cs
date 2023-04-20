@@ -108,5 +108,13 @@ namespace ET
         {
             public Unit Unit;
         }
+
+        public struct UpdateQueueInfo
+        {
+            public Scene ZoneScene;
+            public int Count;
+            public int Index;
+        }
+         
     }
 }

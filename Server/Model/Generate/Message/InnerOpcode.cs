@@ -25,5 +25,7 @@ namespace ET
 		 public const ushort G2M_SessionDisconnect = 20022;
 		 public const ushort G2Name_CheckName = 20023;
 		 public const ushort Name2G_CheckName = 20024;
+		 public const ushort G2Queue_EnQueue = 20025;
+		 public const ushort Queue2G_EnQueue = 20026;
 	}
 }

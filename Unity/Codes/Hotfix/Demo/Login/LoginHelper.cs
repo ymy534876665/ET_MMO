@@ -3,6 +3,7 @@ using System;
 
 namespace ET
 {
+    [FriendClassAttribute(typeof(ET.RoleInfosComponent))]
     public static class LoginHelper
     {
         public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password)
@@ -124,13 +125,75 @@ namespace ET
         public static async ETTask<int> CreateRole(Scene zoneScene,string name)
         {
             G2C_CreateRole msg = (G2C_CreateRole) await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_CreateRole() { Name = name});
-            if (msg.Error != ErrorCode.ERR_Success)
+            if (msg.Error != ErrorCode.ERR_Success) 
             {
                 Log.Error($"创角角色错误 错误码{msg.Error}");
                 return msg.Error;
             }
-            zoneScene.GetComponent<RoleInfosComponent>().AddRoleInfo(msg.Role);
+            zoneScene.GetComponent<RoleInfosComponent>().AddRoleInfo(msg.Role); 
             return ErrorCode.ERR_Success;
         }
+
+
+        public static async ETTask<int> DeleteRole(Scene zoneScene, long roleId)
+        {
+
+            G2C_DeleteRole msg = (G2C_DeleteRole) await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_DeleteRole()
+            {
+                RoleId = roleId
+            });
+            if (msg.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"删除角色错误：错误码{msg.Error}");
+                return msg.Error;
+            }
+            
+            zoneScene.GetComponent<RoleInfosComponent>().DeleteRoleInfoById(msg.RoleId);
+            return ErrorCode.ERR_Success;
+        }
+
+
+        public static async ETTask<int> EnterMap(Scene zoneScene)
+        {
+
+            if (!zoneScene.GetComponent<RoleInfosComponent>().IsCurrentRoleExist())
+            {
+                return ErrorCode.ERR_Login_RoleNotExist;
+            }
+            G2C_Enter2Map msg = (G2C_Enter2Map) await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_Enter2Map()
+            {
+                UnitId = zoneScene.GetComponent<RoleInfosComponent>().CurrentUnitId
+            });
+            if (msg.Error != ErrorCode.ERR_Success)
+            {     
+                Log.Error($"进入游戏失败：错误码{msg.Error}");
+                return msg.Error;
+            }
+
+            zoneScene.GetComponent<PlayerComponent>().MyId = zoneScene.GetComponent<RoleInfosComponent>().CurrentUnitId;
+            if (msg.InQueue)
+            {
+                //发送排队事件
+                Game.EventSystem.Publish(new EventType.UpdateQueueInfo()
+                {
+                    Count =  msg.Count,
+                    Index = msg.index,
+                    ZoneScene = zoneScene
+                });
+                return ErrorCode.ERR_Success;
+            }
+            
+            //等待场景切换完成
+            await zoneScene.GetComponent<ObjectWait>().Wait<WaitType.Wait_SceneChangeFinish>();
+            
+            
+            //进入场景完成事件
+            Game.EventSystem.Publish(new EventType.EnterMapFinish()
+            {
+                ZoneScene = zoneScene
+            });
+            return ErrorCode.ERR_Success;
+        }
+
     }
 }

@@ -13,6 +13,7 @@ namespace ET
 		public static void RegisterUIEvent(this DlgCreateCharacter self)
 		{
 			self.View.E_CreateBtnButton.AddListenerAsync(self.OnClickCreateBtnHandler);
+			self.View.E_BackBtnButton.AddListener(self.OnClickBackBtnHandler);
 		}
 
 		public static void ShowWindow(this DlgCreateCharacter self, Entity contextData = null)
@@ -47,6 +48,12 @@ namespace ET
 			await ETTask.CompletedTask;
 		}
 		 
+		
+		public static void OnClickBackBtnHandler(this DlgCreateCharacter self)
+		{
+			self.ZoneScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_CreateCharacter);
+			self.ZoneScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_CharacterSelect);
+		}
 
 	}
 }

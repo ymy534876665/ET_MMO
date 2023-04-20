@@ -40,6 +40,12 @@ namespace ET
         public const int ERR_Login_NoneCheckName = 200014;  
         
         public const int ERR_Login_NameRepeated = 200015;
+        
+        public const int ERR_Login_NoRole = 200016;
+        
+        public const int ERR_Login_NoRoleDB= 200017;
+        
+        public const int ERR_Login_RoleNotExist= 200018;
 
     }
 }

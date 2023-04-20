@@ -171,3 +171,28 @@ message Name2G_CheckName //IActorResponse
 	int32 Error = 2;
 	string Message = 3;
 }
+
+
+
+//ResponseType Queue2G_EnQueue
+message G2Queue_EnQueue //IActorRequest
+{
+	int32 RpcId = 90;
+
+	int64 UnitId = 1;
+	string Account = 2;
+	int64 GateActorId = 3;
+}
+
+
+message Queue2G_EnQueue //IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+
+	bool NeedQueue = 1;
+	int32 Index = 2;
+	int32 Count = 3;
+}
+

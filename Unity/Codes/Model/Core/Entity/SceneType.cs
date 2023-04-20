@@ -12,6 +12,8 @@
 		RealmInfo = 7,
 		
 		Name = 8,//名字查重服
+		
+		Queue = 9,//排队服务器
 
 		// 客户端Model层
 		Client = 30,

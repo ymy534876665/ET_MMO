@@ -30,5 +30,27 @@
 
             return self.RoleInfos[index];
         }
+
+        public static void DeleteRoleInfoById(this RoleInfosComponent self,long roleId)
+        {
+            int index =  self.RoleInfos.FindIndex((roleInfo) => { return roleInfo.Id == roleId; });
+            
+            self.RoleInfos.RemoveAt(index);
+        }
+
+        public static bool IsCurrentRoleExist(this RoleInfosComponent self)
+        {
+            if (self.CurrentUnitId == 0)
+            {
+                return false;
+            }
+
+            RoleInfo info = self.RoleInfos.Find(d => { return d.Id == self.CurrentUnitId;});
+            if (info == null)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

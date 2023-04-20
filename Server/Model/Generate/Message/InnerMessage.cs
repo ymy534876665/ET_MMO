@@ -356,4 +356,47 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(Queue2G_EnQueue))]
+	[Message(InnerOpcode.G2Queue_EnQueue)]
+	[ProtoContract]
+	public partial class G2Queue_EnQueue: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(2)]
+		public string Account { get; set; }
+
+		[ProtoMember(3)]
+		public long GateActorId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.Queue2G_EnQueue)]
+	[ProtoContract]
+	public partial class Queue2G_EnQueue: Object, IActorResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public bool NeedQueue { get; set; }
+
+		[ProtoMember(2)]
+		public int Index { get; set; }
+
+		[ProtoMember(3)]
+		public int Count { get; set; }
+
+	}
+
 }

@@ -50,5 +50,9 @@ namespace ET
 		 public const ushort G2C_GetRoles = 10047;
 		 public const ushort C2G_CreateRole = 10048;
 		 public const ushort G2C_CreateRole = 10049;
+		 public const ushort C2G_DeleteRole = 10050;
+		 public const ushort G2C_DeleteRole = 10051;
+		 public const ushort C2G_Enter2Map = 10052;
+		 public const ushort G2C_Enter2Map = 10053;
 	}
 }
