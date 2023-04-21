@@ -379,13 +379,13 @@ namespace ET
 	[ProtoContract]
 	public partial class Queue2G_EnQueue: Object, IActorResponse
 	{
-		[ProtoMember(1)]
+		[ProtoMember(90)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(91)]
 		public int Error { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(92)]
 		public string Message { get; set; }
 
 		[ProtoMember(1)]
@@ -396,6 +396,40 @@ namespace ET
 
 		[ProtoMember(3)]
 		public int Count { get; set; }
+
+	}
+
+	[ResponseType(nameof(Queue2G_EnterMap))]
+	[Message(InnerOpcode.Queue2G_EnterMap)]
+	[ProtoContract]
+	public partial class Queue2G_EnterMap: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public string Account { get; set; }
+
+		[ProtoMember(2)]
+		public long UnitId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2Queue_EnterMap)]
+	[ProtoContract]
+	public partial class G2Queue_EnterMap: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public bool NeedRemove { get; set; }
 
 	}
 
