@@ -13,5 +13,6 @@
         WindowID_TapToStart, //点击开始游戏界面
         WindowID_CharacterSelect,//选择角色
         WindowID_CreateCharacter,//创角
+        WindowID_Queue,//排队界面
     }
 }

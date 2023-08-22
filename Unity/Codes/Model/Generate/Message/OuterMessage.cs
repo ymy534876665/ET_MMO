@@ -826,4 +826,44 @@ namespace ET
 
 	}
 
+	[Message(OuterOpcode.G2C_UpdateQueue)]
+	[ProtoContract]
+	public partial class G2C_UpdateQueue: Object, IMessage
+	{
+		[ProtoMember(1)]
+		public int Index { get; set; }
+
+		[ProtoMember(2)]
+		public int Count { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_CancelQueue))]
+	[Message(OuterOpcode.C2G_CancelQueue)]
+	[ProtoContract]
+	public partial class C2G_CancelQueue: Object, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.G2C_CancelQueue)]
+	[ProtoContract]
+	public partial class G2C_CancelQueue: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 }

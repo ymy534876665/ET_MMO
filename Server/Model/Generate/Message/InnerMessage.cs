@@ -433,4 +433,37 @@ namespace ET
 
 	}
 
+	[Message(InnerOpcode.Queue2G_UpdateInfo)]
+	[ProtoContract]
+	public partial class Queue2G_UpdateInfo: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public List<string> Account = new List<string>();
+
+		[ProtoMember(2)]
+		public List<int> Index = new List<int>();
+
+		[ProtoMember(3)]
+		public int Count { get; set; }
+
+	}
+
+	[Message(InnerOpcode.G2Queue_Disconnect)]
+	[ProtoContract]
+	public partial class G2Queue_Disconnect: Object, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(2)]
+		public bool Protect { get; set; }
+
+	}
+
 }

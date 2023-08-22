@@ -195,5 +195,21 @@ namespace ET
             return ErrorCode.ERR_Success;
         }
 
+
+        public static async ETTask<int> CancelQueue(Scene zoneScene)
+        {
+            G2C_CancelQueue msg =   (G2C_CancelQueue)await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2G_CancelQueue()
+            {
+                UnitId = zoneScene.GetComponent<RoleInfosComponent>().CurrentUnitId
+            });
+            if (msg.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error($"取消排队 Error{msg.Error}");
+                return msg.Error;
+            }
+            
+            return ErrorCode.ERR_Success;
+        }
+
     }
 }

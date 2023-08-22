@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System.Linq;
+
+namespace ET
 {
 
     public  class QueueMgrComponentAwakeSyetem : AwakeSystem<QueueMgrComponent>
@@ -38,7 +40,7 @@
     {
         public override void Run(QueueMgrComponent t)
         {
-            
+            t.ClearProtect();
         }
     }
     
@@ -70,6 +72,7 @@
                 self.protects.Remove(unitId);
                 if (self.Queue.ContainsKey(unitId))
                 {
+                    //排一半掉线了，继续排队
                     return true;
                 }
 
@@ -171,7 +174,72 @@
         /// <param name="self"></param>
         public static void UpdateQueue(this QueueMgrComponent self)
         {
-            
+            using (DictionaryPoolComponent<long,Queue2G_UpdateInfo> dict = DictionaryPoolComponent<long,Queue2G_UpdateInfo>.Create())
+            {
+                using (var enumerator = self.Queue.GetEnumerator())
+                {
+                    int i = 1;
+                    while (enumerator.MoveNext())
+                    {
+                        QueueInfo queueInfo = enumerator.Current;
+                        queueInfo.index = i;
+                        ++i;
+
+                        Queue2G_UpdateInfo queue2GUpdateInfo;
+                        if (!dict.TryGetValue(queueInfo.GateActorId,out queue2GUpdateInfo))
+                        {
+                            queue2GUpdateInfo = new Queue2G_UpdateInfo()
+                            {
+                                Count = self.Queue.count
+                            };
+                            dict.Add(queueInfo.GateActorId,queue2GUpdateInfo);
+                        }
+                        queue2GUpdateInfo.Account.Add(queueInfo.Account);
+                        queue2GUpdateInfo.Index.Add(queueInfo.index);
+
+                    }
+                }
+
+                foreach (var info in dict)
+                {
+                    MessageHelper.SendActor(info.Key, info.Value);
+                }
+                
+            }
+        }
+
+        public static void Disconnect(this QueueMgrComponent self,long unitId,bool isProtect)
+        {
+            if (isProtect)
+            {
+                if (self.online.Contains(unitId)||self.Queue.ContainsKey(unitId))
+                {
+                    self.protects.AddLast(unitId,new ProtectInfo() {UnitId = unitId,Time = TimeHelper.ServerNow()});
+                }
+              
+            }
+            else
+            {
+                self.online.Remove(unitId);
+                self.Queue.Remove(unitId);
+                self.protects.Remove(unitId);
+            }
+        }
+
+        public static void ClearProtect(this  QueueMgrComponent self)
+        {
+            long targetTime = TimeHelper.ServerNow() - ConstValue.Queue_ProtectTime; //掉线保护时间
+            while (self.protects.count > 0)
+            {
+                ProtectInfo info = self.protects.First;
+                if (info.Time > targetTime) 
+                {
+                    
+                    break;
+                }
+
+                self.Disconnect(info.UnitId,false);
+            }
         }
         
     }

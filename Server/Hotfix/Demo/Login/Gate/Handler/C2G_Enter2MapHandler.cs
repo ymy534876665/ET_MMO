@@ -41,6 +41,35 @@ namespace ET
                     reply();
                     return;
                 }
+                //处于顶号状态
+                if (gateUser.GetComponent<MultiLoginComponent>() != null)
+                {
+                    if (accountZoneDB.LastRoleId != unitId)
+                    {
+                        await gateUser.Offline(false);
+                    }
+                    //等上面下线后再移除顶号状态,防止这时候刚好排队服排到了上一个号
+                    gateUser.RemoveComponent<MultiLoginComponent>();
+
+                    if (gateUser.state == GateUserState.InQueue)
+                    {
+                        GateQueueComponent gateQueueComponent = gateUser.GetComponent<GateQueueComponent>();
+                        response.InQueue = true;
+                        response.index = gateQueueComponent.Index;
+                        response.Count = gateQueueComponent.Count;
+                        reply();
+                        return;
+                    }
+
+                    if (gateUser.state == GateUserState.InMap)
+                    {
+                        reply();
+                        gateUser.EnterMap().Coroutine();
+                        return;
+                    }
+                }
+                
+                
 
                 RoleInfoDB targetRoleInfoDB = accountZoneDB.GetChild<RoleInfoDB>(request.UnitId);
 
@@ -97,6 +126,7 @@ namespace ET
                 {
                     Log.Console($"->测试账号：{account},不排队直接进入游戏");
                     //游戏直接进入游戏
+                    gateUser.EnterMap().Coroutine();
                 }
 
             }

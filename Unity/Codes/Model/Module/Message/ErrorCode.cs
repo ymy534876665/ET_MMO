@@ -46,6 +46,10 @@ namespace ET
         public const int ERR_Login_NoRoleDB= 200017;
         
         public const int ERR_Login_RoleNotExist= 200018;
+        
+        public const int ERR_Login_RoleInMap= 200019;
+        
+        
 
     }
 }

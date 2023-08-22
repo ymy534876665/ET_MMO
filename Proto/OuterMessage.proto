@@ -423,3 +423,25 @@ message G2C_Enter2Map // IResponse
 	
 }
 
+message G2C_UpdateQueue //IMessage
+{
+	int32 Index = 1;
+	int32 Count = 2;
+}
+
+//ResponseType G2C_CancelQueue
+message C2G_CancelQueue  // IRequest
+{
+	int32 RpcId = 90;
+
+	int64 UnitId = 1;
+}
+
+message G2C_CancelQueue // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+} 
+

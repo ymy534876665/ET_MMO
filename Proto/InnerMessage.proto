@@ -215,4 +215,25 @@ message G2Queue_EnterMap //IActorResponse
     bool NeedRemove = 1;
 }
 
+message Queue2G_UpdateInfo //IActorMessage
+{
+	int32 RpcId = 90;
+
+	repeated string Account = 1;
+	repeated int32 Index = 2;
+	int32 Count = 3;
+}
+
+
+message G2Queue_Disconnect  //IActorMessage
+{
+	int32 RpcId = 90;
+
+	int64 UnitId = 1;
+
+	bool Protect = 2;
+}
+
+
+
 

@@ -29,5 +29,7 @@ namespace ET
 		 public const ushort Queue2G_EnQueue = 20026;
 		 public const ushort Queue2G_EnterMap = 20027;
 		 public const ushort G2Queue_EnterMap = 20028;
+		 public const ushort Queue2G_UpdateInfo = 20029;
+		 public const ushort G2Queue_Disconnect = 20030;
 	}
 }
